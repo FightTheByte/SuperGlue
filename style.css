@@ -1,0 +1,113 @@
+html{
+    height: 10rem;
+}
+
+.honk-heading {
+    font-family: "Honk", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+      "MORF" 15,
+      "SHLN" 50;
+}
+
+.radio-buttons{
+    display: grid;
+    margin: 1rem auto;
+    text-align: center;
+    grid-template-rows: 1fr 1fr;
+    gap: 5px;
+    width: 5rem;
+}
+
+.radios{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.labels{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+label{
+    font-size: 0.5rem;
+    font-weight: 700;
+}
+
+h1{
+    color: white;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    letter-spacing: 5px;
+}
+
+p{
+    color: white;
+    font-size: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    margin: auto;
+    text-align: center;
+}
+
+button{
+    border-radius: 1rem;
+}
+
+body{
+    background-color: rgba(60, 100, 255, 0.823);
+}
+
+.buttons{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    margin-top: 0rem;
+}
+
+.red{
+    height: 2rem;
+    width: 2rem;
+    margin: auto;
+    display: block;
+    background-color: red;
+    border-radius: 20rem;
+    border: 2px solid black;
+}
+
+.green{
+    height: 2rem;
+    width: 2rem;
+    margin: auto;
+    display: block;
+    background-color: greenyellow;
+    border-radius: 20rem;
+    border: 2px solid black;
+}
+
+.details{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+#save-tabs{
+    background-image: linear-gradient(yellow, rgb(128, 255, 0));
+    color: black;
+    font-weight: bold;
+}
+
+
+#restore-tabs{
+    background-image: linear-gradient(yellow, rgb(128, 255, 0));
+    color: black;
+    font-weight: bold;
+}
+
+#delete-tabs{
+    background-image: linear-gradient(yellow, rgb(128, 255, 0));
+    color: black;
+    font-weight: bold;
+}
