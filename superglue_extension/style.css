@@ -2,6 +2,33 @@ html{
     height: 10rem;
 }
 
+label{
+    font-size: 0.5rem;
+    font-weight: 700;
+}
+
+h1{
+    color: white;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    letter-spacing: 5px;
+}
+
+p{
+    color: white;
+    font-size: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    margin: auto;
+    text-align: center;
+}
+
+button{
+    border-radius: 1rem;
+}
+
+body{
+    background-color: rgba(60, 100, 255, 0.823);
+}
+
 .honk-heading {
     font-family: "Honk", system-ui;
     font-optical-sizing: auto;
@@ -31,31 +58,11 @@ html{
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-label{
-    font-size: 0.5rem;
-    font-weight: 700;
-}
-
-h1{
-    color: white;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    letter-spacing: 5px;
-}
-
-p{
-    color: white;
-    font-size: 10px;
-    font-family: 'Courier New', Courier, monospace;
-    margin: auto;
-    text-align: center;
-}
-
-button{
-    border-radius: 1rem;
-}
-
-body{
-    background-color: rgba(60, 100, 255, 0.823);
+.details{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
 }
 
 .buttons{
@@ -64,6 +71,12 @@ body{
     gap: 1rem;
     padding: 1rem;
     margin-top: 0rem;
+}
+
+.tabs{
+    background-image: linear-gradient(yellow, rgb(128, 255, 0));
+    color: black;
+    font-weight: bold;
 }
 
 .red{
@@ -84,30 +97,4 @@ body{
     background-color: greenyellow;
     border-radius: 20rem;
     border: 2px solid black;
-}
-
-.details{
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    gap: 1rem;
-    margin-top: 0.5rem;
-}
-
-#save-tabs{
-    background-image: linear-gradient(yellow, rgb(128, 255, 0));
-    color: black;
-    font-weight: bold;
-}
-
-
-#restore-tabs{
-    background-image: linear-gradient(yellow, rgb(128, 255, 0));
-    color: black;
-    font-weight: bold;
-}
-
-#delete-tabs{
-    background-image: linear-gradient(yellow, rgb(128, 255, 0));
-    color: black;
-    font-weight: bold;
 }
