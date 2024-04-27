@@ -14,10 +14,10 @@ async function saveTabInfo(){
                 urlObject[index] = tab.url;
             });
             localStorage.setItem(getKey(), JSON.stringify(urlObject));
+            indicator.classList.remove("red");
+            indicator.classList.add("green");
         }
     );
-    indicator.classList.remove("red");
-    indicator.classList.add("green");
 };
 
 function getKey(){
