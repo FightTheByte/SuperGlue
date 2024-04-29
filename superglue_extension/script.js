@@ -1,23 +1,65 @@
 async function saveTabInfo(){
     const indicator = await document.getElementById("indicator");
-    await chrome.tabs.query(
-        {
-            pinned: true,
-        },
-        (tabs) => {
-            if(tabs.length === 0){
-                alert('no pinned tabs to save')
-                return;
+    let key = getKey();
+
+    const bookmark = await new Promise((resolve) => {
+        chrome.bookmarks.search(
+            {
+                title: key
+            },
+            (bookmark) => {
+                resolve(bookmark)
             }
-            let urlObject = {};
-            tabs.forEach((tab, index) => {
-                urlObject[index] = tab.url;
-            });
-            localStorage.setItem(getKey(), JSON.stringify(urlObject));
-            indicator.classList.remove("red");
-            indicator.classList.add("green");
-        }
-    );
+        )
+    })
+    
+    let id = bookmark[0].id;
+
+    await new Promise((resolve) => {
+        chrome.bookmarks.removeTree(id, () => {
+            resolve();
+        })
+    })
+
+    const folder = await new Promise((resolve) => {
+        chrome.bookmarks.create(
+            {
+                parentId: "1",
+                title: key
+            },
+            (folder) => {
+                resolve(folder);
+            }
+        )
+    })
+    
+    const tabs = await new Promise((resolve) => {
+        chrome.tabs.query(
+            {
+                pinned: true
+            },
+            (tabs) => {
+                resolve(tabs);
+            }
+        )
+    })
+
+    if(tabs.length === 0){
+        alert('no pinned tabs to save')
+        return;
+    }
+
+    tabs.forEach((tab, index) => {
+        chrome.bookmarks.create({
+            parentId: folder.id,
+            title: String(index),
+            url: tab.url 
+        })
+    });
+            
+    indicator.classList.remove("red");
+    indicator.classList.add("green");
+
 };
 
 function getKey(){
@@ -31,12 +73,71 @@ function getKey(){
     return key;
 }
 
+async function deleteBookmarks(){
+    const indicator = await document.getElementById("indicator");
+    let key = getKey();
+
+    const bookmark = await new Promise((resolve) => {
+        chrome.bookmarks.search(
+            {
+                title: key
+            },
+            (bookmark) => {
+                resolve(bookmark)
+            }
+        )
+    })
+    
+    let id = bookmark[0].id;
+
+    await new Promise((resolve) => {
+        chrome.bookmarks.removeTree(id, () => {
+            resolve();
+        })
+    })
+
+    const folder = await new Promise((resolve) => {
+        chrome.bookmarks.create(
+            {
+                parentId: "1",
+                title: key
+            },
+            (folder) => {
+                resolve(folder);
+            }
+        )
+    })
+
+    indicator.classList.remove("green");
+    indicator.classList.add("red");
+}
+
 async function restoreTabInfo(){
-    const urls = await JSON.parse(localStorage.getItem(getKey()));
-    if(urls == undefined || urls == null){
+
+    const bookmark = await new Promise((resolve) => {
+        chrome.bookmarks.search(
+            {
+                title: getKey()
+            },
+            (bookmark) => {
+                resolve(bookmark);
+            }
+        )
+    })
+    
+    const urls = await new Promise((resolve) => {
+        chrome.bookmarks.getChildren(bookmark[0].id,
+        (tree) => {
+            resolve(tree)
+        })
+    })
+    
+    console.log(urls)
+    if(urls.length === 0){
         alert('no saved tabs')
         return;
     }
+
     await chrome.tabs.query(
         {
             pinned: true,
@@ -47,13 +148,12 @@ async function restoreTabInfo(){
             })
         }
     );
-    Object
-    .keys(urls)
-    .forEach((key) => {
+    
+    urls.forEach((url) => {
         chrome.tabs.create(
             {
                 pinned: true,
-                url: urls[key]
+                url: url.url
             }
         )
     })
@@ -70,15 +170,32 @@ function handleClickRestore(){
 function handleClickDelete(){
     let key = getKey();
     if(confirm(`Are you sure you want to delete save in slot ${key[9]}`)){
-        localStorage.setItem(key, null);
+        deleteBookmarks();
     };
     checkSave(key);
 }
 
-async function checkSave(saveSlot){
-    const indicator = await document.getElementById("indicator");
-    const urls = await JSON.parse(localStorage.getItem(saveSlot));
-    if(urls === null){
+async function checkSave(){
+    const bookmark = await new Promise((resolve) => {
+        chrome.bookmarks.search(
+            {
+                title: getKey()
+            },
+            (bookmark) => {
+                resolve(bookmark);
+            }
+        )
+    })
+    
+    const urls = await new Promise((resolve) => {
+        chrome.bookmarks.getChildren(bookmark[0].id,
+        (tree) => {
+            resolve(tree)
+        })
+    })
+    
+
+    if(urls.length === 0){
         indicator.classList.remove("green");
         indicator.classList.add("red");
     } else {
@@ -87,15 +204,34 @@ async function checkSave(saveSlot){
     }
 }
 
+function checkBookmarks(){
+    chrome.bookmarks.search(
+        {title: "superglue1"},
+        (bookmarks) => {
+            if(bookmarks.length === 0){
+                for(let i = 1; i < 4; i++ ){
+                    chrome.bookmarks.create(
+                        {
+                            parentId: "1",
+                            title: `superglue${i}`
+                        }
+                    )
+                }    
+            }
+        }
+    )
+}
+
 document.addEventListener('DOMContentLoaded', async function(){
-    await checkSave('superglue1');
+    await checkBookmarks();
+    await checkSave();
 
     const radio1 = document.getElementById("radio1");
     const radio2 = document.getElementById("radio2");
     const radio3 = document.getElementById("radio3");
-    radio1.onclick = () => checkSave("superglue1");
-    radio2.onclick = () => checkSave("superglue2");
-    radio3.onclick = () => checkSave("superglue3");
+    radio1.onclick = () => checkSave();
+    radio2.onclick = () => checkSave();
+    radio3.onclick = () => checkSave();
 
     const saveButton = document.getElementById("save-tabs");
     saveButton.addEventListener('click', handleClickSave);
