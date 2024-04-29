@@ -5,8 +5,8 @@
         "tabs",
         "bookmarks"
     ],
-    "description": "Easily Backup And Restore Your Pinned Tabs.  Remember To Periodically Backup Your Tabs With A Single Click!",
-    "version": "2.0",
+    "description": "Easily Save And Restore Your Pinned Tabs.",
+    "version": "3.0",
     "action": {
         "default_popup": "superglue.html",
         "default_icon": "icons/icon128.png"
