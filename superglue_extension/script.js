@@ -2,6 +2,22 @@ async function saveTabInfo(){
     const indicator = await document.getElementById("indicator");
     let key = getKey();
 
+    const tabs = await new Promise((resolve) => {
+        chrome.tabs.query(
+            {
+                pinned: true
+            },
+            (tabs) => {
+                resolve(tabs);
+            }
+        )
+    })
+
+    if(tabs.length === 0){
+        alert('no pinned tabs to save')
+        return;
+    }
+
     const bookmark = await new Promise((resolve) => {
         chrome.bookmarks.search(
             {
@@ -32,22 +48,6 @@ async function saveTabInfo(){
             }
         )
     })
-    
-    const tabs = await new Promise((resolve) => {
-        chrome.tabs.query(
-            {
-                pinned: true
-            },
-            (tabs) => {
-                resolve(tabs);
-            }
-        )
-    })
-
-    if(tabs.length === 0){
-        alert('no pinned tabs to save')
-        return;
-    }
 
     tabs.forEach((tab, index) => {
         chrome.bookmarks.create({
