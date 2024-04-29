@@ -2,19 +2,20 @@
     "manifest_version": 3,
     "name": "SuperGlue - Glue Pinned Tabs",
     "permissions": [
-        "tabs"
+        "tabs",
+        "bookmarks"
     ],
     "description": "Easily Backup And Restore Your Pinned Tabs.  Remember To Periodically Backup Your Tabs With A Single Click!",
     "version": "2.0",
     "action": {
         "default_popup": "superglue.html",
-        "default_icon": "superglue.png"
+        "default_icon": "icons/icon128.png"
     },
     "icons": {
-        "16": "superglue.png",
-        "32": "superglue.png",
-        "48": "superglue.png",
-        "128": "superglue.png"
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
     }
     
 }
