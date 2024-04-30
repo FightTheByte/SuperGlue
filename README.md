@@ -1,3 +1,4 @@
+![marquee iamge](./icon/marquee.png)
 # Superglue - A Chrome Extension
 ---
 
