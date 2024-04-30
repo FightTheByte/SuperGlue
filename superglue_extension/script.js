@@ -96,14 +96,14 @@ async function deleteBookmarks(){
         })
     })
 
-    const folder = await new Promise((resolve) => {
+    await new Promise((resolve) => {
         chrome.bookmarks.create(
             {
                 parentId: "1",
                 title: key
             },
-            (folder) => {
-                resolve(folder);
+            () => {
+                resolve();
             }
         )
     })
@@ -132,7 +132,6 @@ async function restoreTabInfo(){
         })
     })
     
-    console.log(urls)
     if(urls.length === 0){
         alert('no saved tabs')
         return;
@@ -159,8 +158,8 @@ async function restoreTabInfo(){
     })
 };
 
-async function handleClickSave(){
-    await saveTabInfo();
+function handleClickSave(){
+    saveTabInfo();
 }; 
 
 function handleClickRestore(){
@@ -172,7 +171,6 @@ function handleClickDelete(){
     if(confirm(`Are you sure you want to delete save in slot ${key[9]}`)){
         deleteBookmarks();
     };
-    checkSave(key);
 }
 
 async function checkSave(){
