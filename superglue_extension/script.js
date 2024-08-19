@@ -90,6 +90,16 @@ async function deleteBookmarks(){
     
     let id = bookmark[0].id;
 
+    const tabs = await new Promise((resolve) => {
+        chrome.tabs.query({ pinned: true }, (tabs) => {
+            resolve(tabs);
+        });
+    });
+
+    await new Promise((resolve) => {
+        chrome.tabs.remove(tabs.map(tab => tab.id), resolve);
+    });
+
     await new Promise((resolve) => {
         chrome.bookmarks.removeTree(id, () => {
             resolve();
@@ -113,7 +123,7 @@ async function deleteBookmarks(){
 }
 
 async function restoreTabInfo(){
-
+ 
     const bookmark = await new Promise((resolve) => {
         chrome.bookmarks.search(
             {
@@ -152,7 +162,8 @@ async function restoreTabInfo(){
         chrome.tabs.create(
             {
                 pinned: true,
-                url: url.url
+                url: url.url,
+                active: false 
             }
         )
     })
@@ -173,7 +184,10 @@ function handleClickDelete(){
     };
 }
 
-async function checkSave(){
+async function checkSave(radio){
+    if(radio){
+        localStorage.setItem("selectedRadio", radio)
+    }
     const bookmark = await new Promise((resolve) => {
         chrome.bookmarks.search(
             {
@@ -221,15 +235,24 @@ function checkBookmarks(){
 }
 
 document.addEventListener('DOMContentLoaded', async function(){
+    const preselectId = localStorage.getItem("selectedRadio");
+    if (preselectId) {
+        const preselect = document.getElementById(preselectId);
+        if (preselect) {
+            preselect.checked = true;
+            preselect.dispatchEvent(new Event('change')); 
+        }
+    }
+
     await checkBookmarks();
-    await checkSave();
+    checkSave();
 
     const radio1 = document.getElementById("radio1");
     const radio2 = document.getElementById("radio2");
     const radio3 = document.getElementById("radio3");
-    radio1.onclick = () => checkSave();
-    radio2.onclick = () => checkSave();
-    radio3.onclick = () => checkSave();
+    radio1.onclick = () => checkSave("radio1");
+    radio2.onclick = () => checkSave("radio2");
+    radio3.onclick = () => checkSave("radio3");
 
     const saveButton = document.getElementById("save-tabs");
     saveButton.addEventListener('click', handleClickSave);
@@ -239,5 +262,6 @@ document.addEventListener('DOMContentLoaded', async function(){
 
     const deleteButton = document.getElementById("delete-tabs");
     deleteButton.addEventListener('click', handleClickDelete);
+    
 });
 
